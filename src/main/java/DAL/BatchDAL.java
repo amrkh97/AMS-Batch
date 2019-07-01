@@ -12,8 +12,7 @@ import Models.Medicine;
 public class BatchDAL {
 	//TODO: Add Model of Medicine Here as input
 	public static String createBatch(Integer id,Medicine currentMedicine) {
-		String SPsql = "USE KAN_AMO;  EXEC [dbo].[usp_BatchMedicine_Insert]";
-		ResultSet RS;
+		String SPsql = "USE KAN_AMO;  EXEC [dbo].[usp_BatchMedicine_Insert] ?,?,?";
 		String resultOut = "99";
 		Connection conn = DBManager.getDBConn();
 		try {
@@ -25,9 +24,8 @@ public class BatchDAL {
 			cstmt.setString(2, currentMedicine.getBarCode());
 			cstmt.setString(3, currentMedicine.getCountInStock());
 			
-			RS=cstmt.executeQuery();
-			RS.next();
-			resultOut = RS.getString(1);
+			cstmt.executeUpdate();
+			
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -49,8 +47,7 @@ public class BatchDAL {
 	
 	public static int checkID(Integer id) {
 		
-		String SPsql = "USE KAN_AMO;  EXEC [dbo].[usp_BatchMedicine_CheckID]";
-		ResultSet RS;
+		String SPsql = "USE KAN_AMO;  EXEC [dbo].[usp_BatchMedicine_CheckID] ?,?";
 		Integer resultOfID = 99;
 		Integer randomID = id;
 		Connection conn = DBManager.getDBConn();
@@ -58,9 +55,9 @@ public class BatchDAL {
 			
 			CallableStatement cstmt = conn.prepareCall(SPsql);	
 			cstmt.setInt(1, randomID);
-			RS=cstmt.executeQuery();
-			RS.next();
-		    resultOfID = RS.getInt(1);
+			cstmt.registerOutParameter(2, Types.INTEGER);
+			cstmt.executeUpdate();
+		    resultOfID = cstmt.getInt(2);
 			
 			//TODO: Think of a better solution to the problem of the BatchID.
 			
@@ -68,14 +65,14 @@ public class BatchDAL {
 				
 			    randomID = (int)(Math.random() * 99999 + 1);
 			    cstmt = conn.prepareCall(SPsql);	
-				cstmt.setInt(1, randomID);	
-				RS=cstmt.executeQuery();
-				RS.next();
-				resultOfID = RS.getInt(1);
+				cstmt.setInt(1, randomID);
+				cstmt.registerOutParameter(2, Types.INTEGER);
+				cstmt.executeUpdate();
+				resultOfID = cstmt.getInt(2);
 				
 			}
 			
-			id=randomID;
+			
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -90,7 +87,7 @@ public class BatchDAL {
 			}
 		}
 		
-		return id;
+		return randomID;
 	}
 
 }
