@@ -4,7 +4,7 @@ public class Medicine {
 private String barCode;
 private String medicineName;
 private String price;
-private String countInStock;
+private Integer countInStock;
 private String implications;
 private String medicineUsage ;
 private String sideEffects;
@@ -30,10 +30,10 @@ public String getPrice() {
 public void setPrice(String price) {
 	this.price = price;
 }
-public String getCountInStock() {
+public Integer getCountInStock() {
 	return countInStock;
 }
-public void setCountInStock(String countInStock) {
+public void setCountInStock(Integer countInStock) {
 	this.countInStock = countInStock;
 }
 public String getImplications() {

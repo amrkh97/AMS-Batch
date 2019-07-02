@@ -11,9 +11,9 @@ import Models.Medicine;
 
 public class BatchDAL {
 	//TODO: Add Model of Medicine Here as input
-	public static String createBatch(Integer id,Medicine currentMedicine) {
-		String SPsql = "USE KAN_AMO;  EXEC [dbo].[usp_BatchMedicine_Insert] ?,?,?";
-		String resultOut = "99";
+	public static int createBatch(Integer id,Medicine currentMedicine) {
+		String SPsql = "USE KAN_AMO;  EXEC [dbo].[usp_BatchMedicine_Insert] ?,?,?,?";
+		Integer resultOut = 99;
 		Connection conn = DBManager.getDBConn();
 		try {
 			
@@ -22,10 +22,10 @@ public class BatchDAL {
 			
 			cstmt.setInt(1, id); 
 			cstmt.setString(2, currentMedicine.getBarCode());
-			cstmt.setString(3, currentMedicine.getCountInStock());
-			
+			cstmt.setInt(3, currentMedicine.getCountInStock());
+			cstmt.registerOutParameter(4, Types.INTEGER);
 			cstmt.executeUpdate();
-			
+			resultOut = cstmt.getInt(4);
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
