@@ -37,8 +37,7 @@ public class MyResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addBatch(ArrayOfMedicines medicineList) {
-    	Integer id = BatchManager.checkID();
-    	return Response.ok().entity(BatchManager.createBatch(id,medicineList.getMedicineArray())).build();
+    	return Response.ok().entity(BatchManager.createBatch(medicineList.getMedicineArray())).build();
     }
     
     

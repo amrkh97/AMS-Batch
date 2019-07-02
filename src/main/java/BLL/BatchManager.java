@@ -3,16 +3,15 @@ package BLL;
 import java.util.ArrayList;
 
 import DAL.BatchDAL;
+import HelperClasses.UniqueIdGenerator;
 import Models.Medicine;
 
 public class BatchManager {
 
-	public static Integer checkID() {
-		Integer randomID = (int)(Math.random() * 99999 + 1);
-		return BatchDAL.checkID(randomID);
-	}
 	
-	public static Integer createBatch(Integer id,ArrayList<Medicine> medicineList) {
+	public static Long createBatch(ArrayList<Medicine> medicineList) {
+		
+		Long id = UniqueIdGenerator.generateLongId();
 		
 		for(Medicine currentMedicine: medicineList) {
 			BatchDAL.createBatch(id,currentMedicine);
