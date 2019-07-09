@@ -1,6 +1,4 @@
-/DAL/
-/Models/
-/BLL/
 /yello/
-/UniqueIdGenerator.class
-/HelperClasses/
+/DAL/
+/BLL/
+/Models/
