@@ -1,6 +1,4 @@
-/BLL/
-/DAL/
-/DB/
-/HelperClasses/
-/Models/
 /yello/
+/DAL/
+/BLL/
+/Models/

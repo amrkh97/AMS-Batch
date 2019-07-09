@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response;
 
 import BLL.BatchManager;
 import Models.ArrayOfMedicines;
+import Models.Data.DataModel;
 
 /**
  * Root resource (exposed at "myresource" path)
@@ -34,7 +35,18 @@ public class MyResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addBatch(ArrayOfMedicines medicineList) {
-		return Response.ok().entity(BatchManager.createBatch(medicineList.getMedicineArray())).build();
+		return Response.ok().entity(BatchManager.createBatch(medicineList.getMedicineArray()))
+				.header("Access-Control-Allow-Origin", "*").build();
 	}
 
+	@Path("batch/updateAmbulanceMapWithBatch")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+    public Response updateAmbulanceMapWithBatch(DataModel _dataModel) {
+		
+		return Response.ok().entity(BatchManager.updateAmbulanceMapWithBatch(_dataModel.getSentID(),_dataModel.getLongID()))
+				.header("Access-Control-Allow-Origin", "*").build();
+	}
+	
 }

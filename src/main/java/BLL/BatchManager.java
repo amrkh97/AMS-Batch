@@ -19,4 +19,10 @@ public class BatchManager {
 		System.out.println("BatchID: " + id);
 		return id;
 	}
+	
+	
+	public static String updateAmbulanceMapWithBatch(Integer VIN,Long ID) {
+		
+		return BatchDAL.updateAmbulanceMapWithBatch(VIN, ID);
+	}
 }
