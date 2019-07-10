@@ -55,7 +55,7 @@ public class MyResource {
 	@Produces(MediaType.APPLICATION_JSON)
     public Response updateAmbulanceMapWithBatch(DataModel _dataModel) {
 		
-		return Response.ok().entity(BatchManager.updateAmbulanceMapWithBatch(_dataModel.getSentID(),_dataModel.getLongID()))
+		return Response.ok(BatchManager.updateAmbulanceMapWithBatch(_dataModel.getSentID(),_dataModel.getLongID()))
 				.header("Access-Control-Allow-Origin", "*").build();
 	}
 	
