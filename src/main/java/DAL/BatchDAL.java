@@ -10,9 +10,10 @@ import Models.Medicine;
 
 public class BatchDAL {
 
-	public static Long createBatch(Long id, Medicine currentMedicine) {
-		String SPsql = "USE KAN_AMO;  EXEC [dbo].[usp_BatchMedicine_Insert] ?,?,?";
+	public static String createBatch(Long id, Medicine currentMedicine) {
+		String SPsql = "USE KAN_AMO;  EXEC [dbo].[usp_BatchMedicine_Insert] ?,?,?,?";
 		Connection conn = DBManager.getDBConn();
+		String result = "FF";
 		try {
 
 			CallableStatement cstmt = conn.prepareCall(SPsql);
@@ -20,8 +21,9 @@ public class BatchDAL {
 			cstmt.setLong(1, id);
 			cstmt.setString(2, currentMedicine.getBarCode());
 			cstmt.setInt(3, currentMedicine.getCountInStock());
+			cstmt.registerOutParameter(4,Types.NVARCHAR);
 			cstmt.executeUpdate();
-
+			result= cstmt.getString(4);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -30,12 +32,12 @@ public class BatchDAL {
 				conn.close();
 				System.out.println("Connection Closed");
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
 
-		return id;
+		return result;
 	}
 	
 	public static String updateAmbulanceMapWithBatch(Integer VIN,Long ID) {
