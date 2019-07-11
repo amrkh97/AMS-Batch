@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response;
 
 import BLL.BatchManager;
 import Models.ArrayOfMedicines;
+import Models.BatchResponse.BatchResponseModel;
 import Models.Data.DataModel;
 
 /**
@@ -35,8 +36,17 @@ public class MyResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addBatch(ArrayOfMedicines medicineList) {
-		return Response.ok().entity(BatchManager.createBatch(medicineList.getMedicineArray()))
-				.header("Access-Control-Allow-Origin", "*").build();
+		 BatchResponseModel _BatchResponseModel = new BatchResponseModel();
+		_BatchResponseModel =  BatchManager.createBatch(medicineList.getMedicineArray());
+		if(_BatchResponseModel.getIsMissing()) {
+			//TODO: Add appropriate response.
+			return Response.ok(_BatchResponseModel)
+					.header("Access-Control-Allow-Origin", "*").build();
+		}else {
+			return Response.ok(_BatchResponseModel)
+					.header("Access-Control-Allow-Origin", "*").build();
+		}
+		
 	}
 
 	@Path("batch/updateAmbulanceMapWithBatch")
@@ -45,7 +55,7 @@ public class MyResource {
 	@Produces(MediaType.APPLICATION_JSON)
     public Response updateAmbulanceMapWithBatch(DataModel _dataModel) {
 		
-		return Response.ok().entity(BatchManager.updateAmbulanceMapWithBatch(_dataModel.getSentID(),_dataModel.getLongID()))
+		return Response.ok(BatchManager.updateAmbulanceMapWithBatch(_dataModel.getSentID(),_dataModel.getLongID()))
 				.header("Access-Control-Allow-Origin", "*").build();
 	}
 	
