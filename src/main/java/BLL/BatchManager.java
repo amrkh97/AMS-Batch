@@ -47,8 +47,7 @@ public class BatchManager {
 				e.printStackTrace();
 			}
 		}
-
-		
+		_BatchResponseModel.setMissingMedicines( _MedicineNames);
 		return _BatchResponseModel;
 	}
 	
