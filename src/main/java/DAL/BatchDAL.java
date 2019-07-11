@@ -10,9 +10,9 @@ import Models.Medicine;
 
 public class BatchDAL {
 
-	public static String createBatch(Long id, Medicine currentMedicine) {
+	public static String createBatch(Long id, Medicine currentMedicine, Connection singleConnection) {
 		String SPsql = "USE KAN_AMO;  EXEC [dbo].[usp_BatchMedicine_Insert] ?,?,?,?";
-		Connection conn = DBManager.getDBConn();
+		Connection conn = singleConnection;
 		String result = "FF";
 		try {
 
