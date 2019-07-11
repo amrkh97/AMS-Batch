@@ -19,6 +19,7 @@ public class BatchManager {
 		BatchResponseModel _BatchResponseModel = new BatchResponseModel();
 		
 		_BatchResponseModel.setBatchID(id);
+		_BatchResponseModel.setIsMissing(false);
 		Connection conn=DBManager.getDBConn();
 		
 		try {
