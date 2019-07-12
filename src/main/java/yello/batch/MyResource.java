@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response;
 
 import BLL.BatchManager;
 import Models.ArrayOfMedicines;
+import Models.MedicineUsedModel;
 import Models.BatchResponse.BatchResponseModel;
 import Models.Data.DataModel;
 
@@ -46,6 +47,17 @@ public class MyResource {
 			return Response.ok(_BatchResponseModel)
 					.header("Access-Control-Allow-Origin", "*").build();
 		}
+		
+	}
+	
+	@Path("batch/updateMedicinesUsed")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateMedicineUsed(MedicineUsedModel medicineList) {
+		
+		return Response.ok(BatchManager.updateMedicinesUsed(medicineList))
+				.header("Access-Control-Allow-Origin", "*").build();
 		
 	}
 
