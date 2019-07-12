@@ -2,12 +2,16 @@ package DAL;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 
 import DB.DBManager;
+import Models.ArrayOfMedicines;
 import Models.Medicine;
 import Models.ServerResponse;
+import Models.Data.DataModel;
 
 public class BatchDAL {
 
@@ -90,4 +94,42 @@ public class BatchDAL {
 
 		return result;
 	}
+	
+	public static ArrayList<Medicine> getAllMedicines(Long batchID) {
+		ArrayList<Medicine> arrayOfMedicines = new ArrayList<Medicine>();
+		
+		String SPsql = "USE KAN_AMO;  EXEC [dbo].[usp_Batch_getMedicines] ?";
+		Connection conn = DBManager.getDBConn();
+		ResultSet rs;
+		try {
+
+			CallableStatement cstmt = conn.prepareCall(SPsql);
+
+			cstmt.setLong(1, batchID);
+			rs = cstmt.executeQuery();
+			while(rs.next()) {
+				
+				Medicine medicine = new Medicine();
+				medicine.setBarCode(rs.getString(1));
+				medicine.setMedicineName(rs.getString(2));
+				medicine.setPrice(rs.getInt(3));
+				medicine.setCountInStock(rs.getInt(4));
+				medicine.setImplications(rs.getString(5));
+				medicine.setMedicineUsage(rs.getString(6));
+				medicine.setSideEffects(rs.getString(7));
+				medicine.setActiveComponent(rs.getString(8));
+				medicine.setMedicineStatus(rs.getString(9));
+				arrayOfMedicines.add(medicine);
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return arrayOfMedicines;
+	}
+
 }

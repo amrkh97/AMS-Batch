@@ -7,10 +7,12 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import HelperClasses.UniqueIdGenerator;
+import Models.ArrayOfMedicines;
 import Models.Medicine;
 import Models.MedicineUsedModel;
 import Models.ServerResponse;
 import Models.BatchResponse.BatchResponseModel;
+import Models.Data.DataModel;
 
 public class BatchManager {
 
@@ -101,6 +103,12 @@ public class BatchManager {
 		}
 
 		return serverResp;
+	}
+	
+	public static ArrayOfMedicines getAllMedicines(DataModel dataModel) {
+		ArrayOfMedicines arrayOfMedicines = new ArrayOfMedicines();
+		arrayOfMedicines.setMedicineArray(BatchDAL.getAllMedicines(dataModel.getLongID()));
+		return arrayOfMedicines;
 	}
 
 }
