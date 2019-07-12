@@ -57,7 +57,7 @@ public class BatchManager {
 	public static ServerResponse updateAmbulanceMapWithBatch(Integer VIN, Long ID) {
 		ServerResponse serverResp = new ServerResponse();
 		serverResp.setResponseHexCode(BatchDAL.updateAmbulanceMapWithBatch(VIN, ID));
-		if(serverResp.equals("00")) {
+		if(serverResp.getResponseHexCode().equals("00")) {
 			serverResp.setResponseMsg("Assignment Successful");
 		}else {
 			serverResp.setResponseMsg("Failed to Assign the batch to vehicle with VIN: "+VIN);
