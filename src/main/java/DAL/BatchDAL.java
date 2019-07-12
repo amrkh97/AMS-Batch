@@ -7,6 +7,7 @@ import java.sql.Types;
 
 import DB.DBManager;
 import Models.Medicine;
+import Models.ServerResponse;
 
 public class BatchDAL {
 
@@ -60,4 +61,33 @@ public class BatchDAL {
 		return Result;
 	}
 
+	public static ServerResponse updateMedicinesUsed(Long batchID,Integer sequenceNumber,String barCode, Integer usedAmt ,Connection singleConnection) {
+		
+		String SPsql = "USE KAN_AMO;  EXEC [dbo].[usp_Batch_MedicineUsed] ?,?,?,?,?";
+		Connection conn = singleConnection;
+		ServerResponse result = new ServerResponse();
+		try {
+
+			CallableStatement cstmt = conn.prepareCall(SPsql);
+
+			cstmt.setLong(1, batchID);
+			cstmt.setInt(2, sequenceNumber);
+			cstmt.setString(3, barCode);
+			cstmt.setInt(4,usedAmt);
+			cstmt.registerOutParameter(5,Types.NVARCHAR);
+			cstmt.executeUpdate();
+			result.setResponseHexCode(cstmt.getString(5));
+			if(result.getResponseHexCode().equals("00")) {
+				result.setResponseMsg("Succesfully Updated");
+			}else {
+				result.setResponseMsg("Update Failed!");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return result;
+	}
 }
