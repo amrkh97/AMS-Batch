@@ -3,7 +3,7 @@ package Models;
 public class Medicine {
 	private String barCode;
 	private String medicineName;
-	private String price;
+	private Integer price;
 	private Integer countInStock;
 	private String implications;
 	private String medicineUsage;
@@ -27,11 +27,11 @@ public class Medicine {
 		this.medicineName = medicineName;
 	}
 
-	public String getPrice() {
+	public Integer getPrice() {
 		return price;
 	}
 
-	public void setPrice(String price) {
+	public void setPrice(Integer price) {
 		this.price = price;
 	}
 

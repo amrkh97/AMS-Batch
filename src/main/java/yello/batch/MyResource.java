@@ -71,4 +71,16 @@ public class MyResource {
 				.header("Access-Control-Allow-Origin", "*").build();
 	}
 	
+	
+	@Path("batch/getAllMedicines")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+    public Response getAllMedicines(DataModel dataModel) {
+		
+		return Response.ok(BatchManager.getAllMedicines(dataModel))
+				.header("Access-Control-Allow-Origin", "*").build();
+	}
+	
+	
 }
