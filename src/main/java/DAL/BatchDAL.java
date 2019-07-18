@@ -121,7 +121,7 @@ public class BatchDAL {
 				medicine.setMedicineStatus(rs.getString(9));
 				arrayOfMedicines.add(medicine);
 			}
-			
+			rs.close();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
