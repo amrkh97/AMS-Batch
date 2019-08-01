@@ -8,16 +8,13 @@ import java.sql.Types;
 import java.util.ArrayList;
 
 import DB.DBManager;
-import Models.ArrayOfMedicines;
 import Models.Medicine;
 import Models.ServerResponse;
-import Models.Data.DataModel;
 
 public class BatchDAL {
 
-	public static String createBatch(Long id, Medicine currentMedicine, Connection singleConnection) {
+	public static String createBatch(Long id, Medicine currentMedicine, Connection conn) {
 		String SPsql = "USE KAN_AMO;  EXEC [dbo].[usp_BatchMedicine_Insert] ?,?,?,?";
-		Connection conn = singleConnection;
 		String result = "FF";
 		try {
 
@@ -30,7 +27,7 @@ public class BatchDAL {
 			cstmt.executeUpdate();
 			result= cstmt.getString(4);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -51,24 +48,23 @@ public class BatchDAL {
 			cstmt.executeUpdate();
 			Result = cstmt.getString(3);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} finally {
 			try {
 				conn.close();
 				System.out.println("Connection Closed");
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
 		return Result;
 	}
 
-	public static ServerResponse updateMedicinesUsed(Long batchID,Integer sequenceNumber,String barCode, Integer usedAmt ,Connection singleConnection) {
+	public static ServerResponse updateMedicinesUsed(Long batchID,Integer sequenceNumber,String barCode, Integer usedAmt ,Connection conn) {
 		
 		String SPsql = "USE KAN_AMO;  EXEC [dbo].[usp_Batch_MedicineUsed] ?,?,?,?,?";
-		Connection conn = singleConnection;
 		ServerResponse result = new ServerResponse();
 		try {
 
@@ -88,7 +84,7 @@ public class BatchDAL {
 			}
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -124,12 +120,41 @@ public class BatchDAL {
 			rs.close();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
+		}finally {
+			try {
+				conn.close();
+				System.out.println("Connection Closed");
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
 		}
 		
 		
 		return arrayOfMedicines;
+	}
+
+	public static String updateBatch(Long id, Medicine currentMedicine, Connection conn) {
+		String SPsql = "USE KAN_AMO;  EXEC [dbo].[usp_BatchMedicine_Update] ?,?,?,?";
+		String result = "FF";
+		try {
+
+			CallableStatement cstmt = conn.prepareCall(SPsql);
+
+			cstmt.setLong(1, id);
+			cstmt.setString(2, currentMedicine.getBarCode());
+			cstmt.setInt(3, currentMedicine.getCountInStock());
+			cstmt.registerOutParameter(4,Types.NVARCHAR);
+			cstmt.executeUpdate();
+			result= cstmt.getString(4);
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+
+		return result;
 	}
 
 }

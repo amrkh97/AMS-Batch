@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response;
 
 import BLL.BatchManager;
 import Models.ArrayOfMedicines;
+import Models.BatchUpdateModel;
 import Models.MedicineUsedModel;
 import Models.BatchResponse.BatchResponseModel;
 import Models.Data.DataModel;
@@ -80,6 +81,24 @@ public class MyResource {
 		
 		return Response.ok(BatchManager.getAllMedicines(dataModel))
 				.header("Access-Control-Allow-Origin", "*").build();
+	}
+	
+	@Path("batch/updateBatch")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateBatch(BatchUpdateModel medicineList) {
+		 BatchResponseModel _BatchResponseModel = new BatchResponseModel();
+		_BatchResponseModel =  BatchManager.updateBatch(medicineList.getBatchID(),medicineList.getMedicinesToUpdate());
+		if(_BatchResponseModel.getIsMissing()) {
+			//TODO: Add appropriate response.
+			return Response.ok(_BatchResponseModel)
+					.header("Access-Control-Allow-Origin", "*").build();
+		}else {
+			return Response.ok(_BatchResponseModel)
+					.header("Access-Control-Allow-Origin", "*").build();
+		}
+		
 	}
 	
 	
