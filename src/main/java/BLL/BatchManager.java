@@ -59,12 +59,12 @@ public class BatchManager {
 	public static ServerResponse updateAmbulanceMapWithBatch(Integer VIN, Long ID) {
 		ServerResponse serverResp = new ServerResponse();
 		serverResp.setResponseHexCode(BatchDAL.updateAmbulanceMapWithBatch(VIN, ID));
-		if(serverResp.getResponseHexCode().equals("00")) {
+		if (serverResp.getResponseHexCode().equals("00")) {
 			serverResp.setResponseMsg("Assignment Successful");
-		}else {
-			serverResp.setResponseMsg("Failed to Assign the batch to vehicle with VIN: "+VIN);
+		} else {
+			serverResp.setResponseMsg("Failed to Assign the batch to vehicle with VIN: " + VIN);
 		}
-		
+
 		return serverResp;
 	}
 
@@ -81,7 +81,7 @@ public class BatchManager {
 			for (Medicine currentMedicine : UsedMedicineList) {
 
 				serverResp = BatchDAL.updateMedicinesUsed(medicineList.getBatchID(), medicineList.getSequenceNumber(),
-						currentMedicine.getBarCode(), currentMedicine.getCountInStock(), conn);
+				currentMedicine.getBarCode(), currentMedicine.getCountInStock(), conn);
 				if (serverResp.getResponseHexCode().equals("00")) {
 					counterCheck++;
 				}
@@ -104,11 +104,50 @@ public class BatchManager {
 
 		return serverResp;
 	}
-	
+
 	public static ArrayOfMedicines getAllMedicines(DataModel dataModel) {
 		ArrayOfMedicines arrayOfMedicines = new ArrayOfMedicines();
 		arrayOfMedicines.setMedicineArray(BatchDAL.getAllMedicines(dataModel.getLongID()));
 		return arrayOfMedicines;
+	}
+
+	public static BatchResponseModel updateBatch(Long batchID, ArrayList<Medicine> arrayList) {
+		
+		ArrayList<String> _MedicineNames = new ArrayList<String>();
+		BatchResponseModel _BatchResponseModel = new BatchResponseModel();
+
+		_BatchResponseModel.setBatchID(batchID);
+		_BatchResponseModel.setIsMissing(false);
+		Connection conn = DBManager.getDBConn();
+
+		try {
+			for (Medicine currentMedicine : arrayList) {
+
+				StringBuilder _StringBuilder = new StringBuilder();
+				StringBuilder _compareString = new StringBuilder();
+
+				String _intermediateString = BatchDAL.updateBatch(batchID, currentMedicine, conn);
+
+				_StringBuilder.append(_intermediateString);
+				_compareString.append("00");
+
+				if (!_compareString.toString().equals(_StringBuilder.toString())) {
+					_MedicineNames.add(currentMedicine.getMedicineName());
+					_BatchResponseModel.setIsMissing(true);
+				}
+			}
+
+		} finally {
+			try {
+				conn.close();
+				System.out.println("Connection Closed");
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+		}
+		_BatchResponseModel.setMissingMedicines(_MedicineNames);
+		return _BatchResponseModel;
 	}
 
 }
