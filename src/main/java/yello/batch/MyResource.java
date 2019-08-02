@@ -102,4 +102,36 @@ public class MyResource {
 	}
 	
 	
+	
+	@Path("batch/getAllbatches")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+    public Response getAllbatches() {
+		
+		return Response.ok(BatchManager.getAllbatches())
+				.header("Access-Control-Allow-Origin", "*").build();
+	}
+	
+	@Path("batch/getAllAssigned")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+    public Response getAllAssigned() {
+		
+		return Response.ok(BatchManager.getAllAssigned())
+				.header("Access-Control-Allow-Origin", "*").build();
+	}
+	
+	@Path("batch/getAllUnAssigned")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+    public Response getAllUnAssigned() {
+		
+		return Response.ok(BatchManager.getAllUnAssigned())
+				.header("Access-Control-Allow-Origin", "*").build();
+	}
+	
+	
 }
