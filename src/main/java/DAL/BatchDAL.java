@@ -249,4 +249,30 @@ public class BatchDAL {
 		return arrayOfAmbBatch;
 	}
 
+	public static ArrayList<AmbBatchMapModel> getBatchesByMedName(String medicineName, Connection conn) {
+		
+		ArrayList<AmbBatchMapModel> arrayOfAmbBatch = new ArrayList<AmbBatchMapModel>();
+		String SPsql = "USE KAN_AMO;  EXEC [dbo].[usp_Batch_getAllByMedName] ?";
+		ResultSet rs;
+		try {
+
+			CallableStatement cstmt = conn.prepareCall(SPsql);
+			cstmt.setString(1, medicineName);
+			rs = cstmt.executeQuery();
+			while (rs.next()) {
+
+				AmbBatchMapModel model = new AmbBatchMapModel();
+				model.setBatchID(rs.getLong(1));
+				arrayOfAmbBatch.add(model);
+			}
+			rs.close();
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		
+		return arrayOfAmbBatch;
+	}
+
 }

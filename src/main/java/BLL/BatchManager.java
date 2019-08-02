@@ -221,4 +221,35 @@ public class BatchManager {
 		return batchArray;
 	}
 
+	public static AmbBatchArray getBatchesByMedName(Medicine medicine) {
+		AmbBatchArray batchArray = new AmbBatchArray();
+		ArrayList<AmbBatchMapModel> ambBatch = new ArrayList<AmbBatchMapModel>();
+		Connection conn = DBManager.getDBConn();
+		
+		try {
+			String medicineName = "";
+			
+			try {
+				medicineName = medicine.getMedicineName();
+			} catch (Exception e) {
+				batchArray.setAmbBatch(ambBatch);
+				return batchArray;
+			}
+			
+			ambBatch = BatchDAL.getBatchesByMedName(medicineName,conn);
+
+		} finally {
+			try {
+				conn.close();
+				System.out.println("Connection Closed");
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+		}
+		batchArray.setAmbBatch(ambBatch);
+		return batchArray;
+
+	}
+
 }

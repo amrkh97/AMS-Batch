@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import BLL.BatchManager;
 import Models.ArrayOfMedicines;
 import Models.BatchUpdateModel;
+import Models.Medicine;
 import Models.MedicineUsedModel;
 import Models.BatchResponse.BatchResponseModel;
 import Models.Data.DataModel;
@@ -105,7 +106,6 @@ public class MyResource {
 	
 	@Path("batch/getAllbatches")
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
     public Response getAllbatches() {
 		
@@ -115,7 +115,6 @@ public class MyResource {
 	
 	@Path("batch/getAllAssigned")
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
     public Response getAllAssigned() {
 		
@@ -125,7 +124,6 @@ public class MyResource {
 	
 	@Path("batch/getAllUnAssigned")
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
     public Response getAllUnAssigned() {
 		
@@ -133,5 +131,14 @@ public class MyResource {
 				.header("Access-Control-Allow-Origin", "*").build();
 	}
 	
+	@Path("batch/getBatchesByMedName")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+    public Response getBatchesByMedName(Medicine medicine) {
+		
+		return Response.ok(BatchManager.getBatchesByMedName(medicine))
+				.header("Access-Control-Allow-Origin", "*").build();
+	}
 	
 }
