@@ -173,6 +173,9 @@ public class BatchDAL {
 				model.setIsAssigned(true);
 				try {
 				model.setVin(rs.getInt(1));
+				if(model.getVin() == 0) {
+					model.setIsAssigned(false);
+				}
 				}catch (Exception e) {
 					model.setVin(-1);
 					model.setIsAssigned(false);
