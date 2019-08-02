@@ -185,14 +185,6 @@ public class BatchDAL {
 		} catch (SQLException e) {
 
 			e.printStackTrace();
-		} finally {
-			try {
-				conn.close();
-				System.out.println("Connection Closed");
-			} catch (SQLException e) {
-
-				e.printStackTrace();
-			}
 		}
 
 		return arrayOfAmbBatch;
@@ -221,14 +213,6 @@ public class BatchDAL {
 		} catch (SQLException e) {
 
 			e.printStackTrace();
-		} finally {
-			try {
-				conn.close();
-				System.out.println("Connection Closed");
-			} catch (SQLException e) {
-
-				e.printStackTrace();
-			}
 		}
 
 		return arrayOfAmbBatch;
@@ -257,16 +241,8 @@ public class BatchDAL {
 		} catch (SQLException e) {
 
 			e.printStackTrace();
-		} finally {
-			try {
-				conn.close();
-				System.out.println("Connection Closed");
-			} catch (SQLException e) {
-
-				e.printStackTrace();
-			}
 		}
-
+		
 		return arrayOfAmbBatch;
 	}
 
