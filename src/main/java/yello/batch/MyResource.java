@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import BLL.BatchManager;
 import Models.ArrayOfMedicines;
 import Models.BatchUpdateModel;
+import Models.Medicine;
 import Models.MedicineUsedModel;
 import Models.BatchResponse.BatchResponseModel;
 import Models.Data.DataModel;
@@ -101,5 +102,43 @@ public class MyResource {
 		
 	}
 	
+	
+	
+	@Path("batch/getAllbatches")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+    public Response getAllbatches() {
+		
+		return Response.ok(BatchManager.getAllbatches())
+				.header("Access-Control-Allow-Origin", "*").build();
+	}
+	
+	@Path("batch/getAllAssigned")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+    public Response getAllAssigned() {
+		
+		return Response.ok(BatchManager.getAllAssigned())
+				.header("Access-Control-Allow-Origin", "*").build();
+	}
+	
+	@Path("batch/getAllUnAssigned")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+    public Response getAllUnAssigned() {
+		
+		return Response.ok(BatchManager.getAllUnAssigned())
+				.header("Access-Control-Allow-Origin", "*").build();
+	}
+	
+	@Path("batch/getBatchesByMedName")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+    public Response getBatchesByMedName(Medicine medicine) {
+		
+		return Response.ok(BatchManager.getBatchesByMedName(medicine))
+				.header("Access-Control-Allow-Origin", "*").build();
+	}
 	
 }

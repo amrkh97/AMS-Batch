@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import HelperClasses.UniqueIdGenerator;
+import Models.AmbBatchArray;
+import Models.AmbBatchMapModel;
 import Models.ArrayOfMedicines;
 import Models.Medicine;
 import Models.MedicineUsedModel;
@@ -81,7 +83,7 @@ public class BatchManager {
 			for (Medicine currentMedicine : UsedMedicineList) {
 
 				serverResp = BatchDAL.updateMedicinesUsed(medicineList.getBatchID(), medicineList.getSequenceNumber(),
-				currentMedicine.getBarCode(), currentMedicine.getCountInStock(), conn);
+						currentMedicine.getBarCode(), currentMedicine.getCountInStock(), conn);
 				if (serverResp.getResponseHexCode().equals("00")) {
 					counterCheck++;
 				}
@@ -112,7 +114,7 @@ public class BatchManager {
 	}
 
 	public static BatchResponseModel updateBatch(Long batchID, ArrayList<Medicine> arrayList) {
-		
+
 		ArrayList<String> _MedicineNames = new ArrayList<String>();
 		BatchResponseModel _BatchResponseModel = new BatchResponseModel();
 
@@ -148,6 +150,106 @@ public class BatchManager {
 		}
 		_BatchResponseModel.setMissingMedicines(_MedicineNames);
 		return _BatchResponseModel;
+	}
+
+	public static AmbBatchArray getAllbatches() {
+
+		AmbBatchArray batchArray = new AmbBatchArray();
+		ArrayList<AmbBatchMapModel> ambBatch = new ArrayList<AmbBatchMapModel>();
+		Connection conn = DBManager.getDBConn();
+		
+		try {
+			
+			ambBatch = BatchDAL.getAllBatches(conn);
+
+		} finally {
+			try {
+				conn.close();
+				System.out.println("Connection Closed");
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+		}
+		batchArray.setAmbBatch(ambBatch);
+		return batchArray;
+	}
+
+	public static AmbBatchArray getAllAssigned() {
+		
+		AmbBatchArray batchArray = new AmbBatchArray();
+		ArrayList<AmbBatchMapModel> ambBatch = new ArrayList<AmbBatchMapModel>();
+		Connection conn = DBManager.getDBConn();
+		
+		try {
+			
+			ambBatch = BatchDAL.getAllAssigned(conn);
+
+		} finally {
+			try {
+				conn.close();
+				System.out.println("Connection Closed");
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+		}
+		batchArray.setAmbBatch(ambBatch);
+		return batchArray;
+	}
+
+	public static AmbBatchArray getAllUnAssigned() {
+		
+		AmbBatchArray batchArray = new AmbBatchArray();
+		ArrayList<AmbBatchMapModel> ambBatch = new ArrayList<AmbBatchMapModel>();
+		Connection conn = DBManager.getDBConn();
+		
+		try {
+			
+			ambBatch = BatchDAL.getAllUnAssigned(conn);
+
+		} finally {
+			try {
+				conn.close();
+				System.out.println("Connection Closed");
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+		}
+		batchArray.setAmbBatch(ambBatch);
+		return batchArray;
+	}
+
+	public static AmbBatchArray getBatchesByMedName(Medicine medicine) {
+		AmbBatchArray batchArray = new AmbBatchArray();
+		ArrayList<AmbBatchMapModel> ambBatch = new ArrayList<AmbBatchMapModel>();
+		Connection conn = DBManager.getDBConn();
+		
+		try {
+			String medicineName = "";
+			
+			try {
+				medicineName = medicine.getMedicineName();
+			} catch (Exception e) {
+				batchArray.setAmbBatch(ambBatch);
+				return batchArray;
+			}
+			
+			ambBatch = BatchDAL.getBatchesByMedName(medicineName,conn);
+
+		} finally {
+			try {
+				conn.close();
+				System.out.println("Connection Closed");
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
+		}
+		batchArray.setAmbBatch(ambBatch);
+		return batchArray;
+
 	}
 
 }
