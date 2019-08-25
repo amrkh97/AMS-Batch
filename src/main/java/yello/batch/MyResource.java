@@ -13,6 +13,7 @@ import Models.ArrayOfMedicines;
 import Models.BatchUpdateModel;
 import Models.Medicine;
 import Models.MedicineUsedModel;
+import Models.ServerResponse;
 import Models.BatchResponse.BatchResponseModel;
 import Models.Data.DataModel;
 
@@ -31,7 +32,7 @@ public class MyResource {
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getIt() {
-		return "Hello, Heroku!";
+		return "Batch Services Are Running!";
 	}
 
 	@Path("batch/addBatch")
@@ -43,7 +44,8 @@ public class MyResource {
 		_BatchResponseModel =  BatchManager.createBatch(medicineList.getMedicineArray());
 		if(_BatchResponseModel.getIsMissing()) {
 			//TODO: Add appropriate response.
-			return Response.ok(_BatchResponseModel)
+			_BatchResponseModel.setResponseMsg("A01002001001");
+			return Response.status(401).entity(_BatchResponseModel)
 					.header("Access-Control-Allow-Origin", "*").build();
 		}else {
 			return Response.ok(_BatchResponseModel)
@@ -57,9 +59,20 @@ public class MyResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateMedicineUsed(MedicineUsedModel medicineList) {
-		
-		return Response.ok(BatchManager.updateMedicinesUsed(medicineList))
-				.header("Access-Control-Allow-Origin", "*").build();
+		ServerResponse response  = new ServerResponse();
+		response = BatchManager.updateMedicinesUsed(medicineList);
+		switch (response.getResponseMsg()) {
+		case "01":
+			response.setResponseMsg("A01002002001");
+			return Response.ok(response)
+					.header("Access-Control-Allow-Origin", "*").build();
+			
+
+		default:
+			return Response.ok(response)
+					.header("Access-Control-Allow-Origin", "*").build();
+			
+		}
 		
 	}
 
@@ -68,9 +81,19 @@ public class MyResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
     public Response updateAmbulanceMapWithBatch(DataModel _dataModel) {
+		ServerResponse response = new ServerResponse();
+		response = BatchManager.updateAmbulanceMapWithBatch(_dataModel.getSentID(),_dataModel.getLongID());
+		switch (response.getResponseHexCode()) {
+		case "01":
+			response.setResponseMsg("A01002003001");
+			return Response.status(401).entity(response)
+					.header("Access-Control-Allow-Origin", "*").build();
+
+		default:
+			return Response.ok(response)
+					.header("Access-Control-Allow-Origin", "*").build();
+		}
 		
-		return Response.ok(BatchManager.updateAmbulanceMapWithBatch(_dataModel.getSentID(),_dataModel.getLongID()))
-				.header("Access-Control-Allow-Origin", "*").build();
 	}
 	
 	
@@ -92,8 +115,8 @@ public class MyResource {
 		 BatchResponseModel _BatchResponseModel = new BatchResponseModel();
 		_BatchResponseModel =  BatchManager.updateBatch(medicineList.getBatchID(),medicineList.getMedicinesToUpdate());
 		if(_BatchResponseModel.getIsMissing()) {
-			//TODO: Add appropriate response.
-			return Response.ok(_BatchResponseModel)
+			_BatchResponseModel.setResponseMsg("A01002005001");
+			return Response.status(401).entity(_BatchResponseModel)
 					.header("Access-Control-Allow-Origin", "*").build();
 		}else {
 			return Response.ok(_BatchResponseModel)
@@ -101,7 +124,6 @@ public class MyResource {
 		}
 		
 	}
-	
 	
 	
 	@Path("batch/getAllbatches")
