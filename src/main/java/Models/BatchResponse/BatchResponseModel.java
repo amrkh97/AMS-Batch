@@ -2,7 +2,9 @@ package Models.BatchResponse;
 
 import java.util.ArrayList;
 
-public class BatchResponseModel {
+import Models.ServerResponse;
+
+public class BatchResponseModel extends ServerResponse{
 	private Long batchID;
 	private ArrayList<String> missingMedicines;
 	private Boolean isMissing;

@@ -64,6 +64,7 @@ public class BatchManager {
 		if (serverResp.getResponseHexCode().equals("00")) {
 			serverResp.setResponseMsg("Assignment Successful");
 		} else {
+			serverResp.setResponseHexCode("01");
 			serverResp.setResponseMsg("Failed to Assign the batch to vehicle with VIN: " + VIN);
 		}
 
