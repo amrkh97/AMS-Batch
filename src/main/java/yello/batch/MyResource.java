@@ -44,7 +44,7 @@ public class MyResource {
 		_BatchResponseModel =  BatchManager.createBatch(medicineList.getMedicineArray());
 		if(_BatchResponseModel.getIsMissing()) {
 			//TODO: Add appropriate response.
-			_BatchResponseModel.setResponseMsg("A01002001001");
+			_BatchResponseModel.setResponseHexCode("A01002001001");
 			return Response.status(401).entity(_BatchResponseModel)
 					.header("Access-Control-Allow-Origin", "*").build();
 		}else {
@@ -63,7 +63,7 @@ public class MyResource {
 		response = BatchManager.updateMedicinesUsed(medicineList);
 		switch (response.getResponseMsg()) {
 		case "01":
-			response.setResponseMsg("A01002002001");
+			response.setResponseHexCode("A01002002001");
 			return Response.ok(response)
 					.header("Access-Control-Allow-Origin", "*").build();
 			
@@ -85,7 +85,7 @@ public class MyResource {
 		response = BatchManager.updateAmbulanceMapWithBatch(_dataModel.getSentID(),_dataModel.getLongID());
 		switch (response.getResponseHexCode()) {
 		case "01":
-			response.setResponseMsg("A01002003001");
+			response.setResponseHexCode("A01002003001");
 			return Response.status(401).entity(response)
 					.header("Access-Control-Allow-Origin", "*").build();
 
